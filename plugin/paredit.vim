@@ -146,6 +146,7 @@ function! PareditInitBuffer()
         execute 'vnoremap <buffer> <silent> ' . g:paredit_leader.'w(  :<C-U>call PareditWrapSelection("(",")")<CR>'
         call RepeatableNNoRemap(g:paredit_leader . 'w"', ':<C-U>call PareditWrap('."'".'"'."','".'"'."')")
         execute 'vnoremap <buffer> <silent> ' . g:paredit_leader.'w"  :<C-U>call PareditWrapSelection('."'".'"'."','".'"'."')<CR>"
+        nnoremap <buffer> <silent> ,t :<C-U>call PareditToggle()<CR>
         " Spliec s-expression killing backward/forward
         execute 'nmap     <buffer> <silent> ' . g:paredit_leader.'<Up>    d[(,S'
         execute 'nmap     <buffer> <silent> ' . g:paredit_leader.'<Down>  d])%,S'
@@ -551,6 +552,10 @@ endfunction
 " Is the current top level form balanced, i.e all opening delimiters
 " have a matching closing delimiter
 function! s:IsBalanced()
+    return 1
+endfunction
+
+function! s:IsBalancedOriginal()
     let l = line( '.' )
     let c =  col( '.' )
     let line = getline( '.' )
@@ -792,7 +797,7 @@ function! PareditInsertOpening( open, close )
     endif
     if pos > 0 && line[pos-1] !~ b:any_wsopen_char && line[pos-1] !~ s:any_macro_prefix
         " Add a space before if needed
-        let retval = " " . retval
+        "let retval = " " . retval
     endif
     return retval
 endfunction
